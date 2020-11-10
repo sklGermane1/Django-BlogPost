@@ -2,6 +2,10 @@
 
 {% block content %}
 <div class="container">
-    
+    <fieldset>
+        <img src="{{ user.profile.image.url }}" alt="Profile Picture">
+        <legend>Profile from {{ user.username }}</legend>
+        <h2>{{ user.email }}</h2>
+    </fieldset>
 </div>
 {% endblock %}
