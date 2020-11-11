@@ -1,21 +1,34 @@
 {% extends "posts/base.html" %}
 {% load crispy_forms_tags %}
-{% block content %}
-<div class="container">
-    <fieldset>
-        <img src="{{ user.profile.image.url }}" alt="Profile Picture">
-        <legend>Profile from {{ user.username }}</legend>
-        <h2>{{ user.email }}</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
+{% block content %} 
+
+<div class="container shadow-lg bg-white rounded mt-5 mb-5">
+    <fieldset>  
+    <legend class="text-center mt-3">Profile from {{ user.username }}</legend> 
+    <div class="row"> 
+  
+        <div class="col-2">
+       
+       <img class="ml-3 img-fluid" src="{{ user.profile.image.url }}" style="border-radius: 50%;width:150px;" alt="Profile Picture">
+       </div>
+    <div class="col">
+    <div>
+
+        <form action=""    method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
+               
             </div>
-            <div>
-                <button class="btn btn-outline-dark">Update</button>
+            <div class="mb-3">
+                <a href="{% url 'posts-home' %}" class="btn btn-outline-primary">Go back</a>
+                <button class="btn btn-outline-dark ">Update</button>
             </div>
         </form>
+        </div>
+        </div>
+        </div>
     </fieldset>
 </div>
 {% endblock %}
