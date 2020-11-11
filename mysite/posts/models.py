@@ -17,3 +17,11 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post-detail", kwargs={"pk": self.pk})
     
+class Comment(models.Model):
+    post = models.ForeignKey(Post,related_name="comments", on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    body = RichTextField(blank=True,null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Comment({self.post.title}, {self.user.username})"

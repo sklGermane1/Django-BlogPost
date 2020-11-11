@@ -19,6 +19,31 @@
             </div>
             </div>
         </div>
+        
+    </div>
+    </div>
+    <div>
+        <fieldset>
+            <legend class="text-center mt-3">Comments</legend>
+            <a class="btn btn-outline-info" href="{% url 'comment-create' post.id %}">Add Comment</a>
+            {% if not post.comments.all %}
+            No Comments yet...
+            {% else %}
+            {% for comment in post.comments.all %}
+                <div class="card shadow mb-5 bg-white rounded mt-3">
+                    <div class="card-body">
+                        <h6 class="card-title d-flex">{{ comment.user.username }}
+                            <span class="ml-auto text-muted">{{ comment.created_at|date:"F, d Y" }}</span>
+                        </h6>
+                        <p class="card-text">
+                            {{ comment.body|safe }}
+                        </p>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
+        </fieldset>
     </div>
 </div>
 {% endblock %}

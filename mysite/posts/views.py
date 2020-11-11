@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post,Comment
+from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import (
     ListView,
@@ -54,3 +55,17 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def about(request):
     context = {}
     return render(request,"posts/about.html",context)
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "posts/comment_create.html"
+
+
+    def form_valid(self,form):
+        form.instance.post_id = self.kwargs["pk"]
+        form.instance.user = self.request.user 
+        return super().form_valid(form)
+    
+    success_url = "/"
