@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "ckeditor",
     "crispy_forms",
     "posts.apps.PostsConfig",
     "users.apps.UsersConfig",
