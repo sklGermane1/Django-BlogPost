@@ -1,11 +1,21 @@
 {% extends "posts/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="container">
     <fieldset>
         <img src="{{ user.profile.image.url }}" alt="Profile Picture">
         <legend>Profile from {{ user.username }}</legend>
         <h2>{{ user.email }}</h2>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+            </div>
+            <div>
+                <button class="btn btn-outline-dark">Update</button>
+            </div>
+        </form>
     </fieldset>
 </div>
 {% endblock %}
