@@ -7,11 +7,13 @@
         <div class="card-body"> 
         <div class="row"> 
         <div class="col-2">
-       <img class="ml-3 img-fluid" src="{{ user.profile.image.url }}" style="border-radius: 50%;width:150px;" alt="Profile Picture">
-       </div>
+     <img class="ml-3 img-fluid" src="{{ user.profile.image.url }}" style="border-radius: 50%;width:150px;" alt="Profile Picture">
+       
+    
+</div>
        <div class="col">
             <div class="card-title d-flex">{{ post.title }}  
-                <span class="ml-2">by {{ object.author.username }}</span>
+                <span class="ml-2">by <a href="{% url 'user_posts' object.author.username %}">{{ object.author.username }}</a></span>
                 <span class="text-muted ml-auto">{{ object.created_at|date:"F, d Y" }}</span>
             </div>
             <div class="card-text">

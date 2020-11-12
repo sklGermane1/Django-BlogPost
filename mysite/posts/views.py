@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Post,Comment
+from .models import Post,Comment 
+from django.contrib.auth.models import User
 from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.http import HttpResponseRedirect
@@ -76,6 +77,17 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def about(request):
     context = {}
     return render(request,"posts/about.html",context)
+
+class UserPostListView(ListView):
+    model = Post 
+    template_name = "posts/user_posts.html"
+    context_object_name = "posts"
+    ordering = ["-created_at"]
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = get_object_or_404(User,username=self.kwargs.get("username"))
+        return Post.objects.filter(author=user).order_by("-created_at")
 
 
 class CommentCreateView(CreateView):
