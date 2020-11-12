@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post,Comment
 from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from django.http import HttpResponseRedirect
+from  django.urls import reverse_lazy,reverse
+
 from django.views.generic import (
     ListView,
     CreateView,
@@ -20,6 +23,24 @@ class PostListView(LoginRequiredMixin,ListView):
 
 class PostDetailView(LoginRequiredMixin,DetailView):
     model = Post
+
+class PostDetailView(DetailView):
+    model = Post 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        stuff = get_object_or_404(Post, id=self.kwargs["pk"])
+        
+        total_likes = stuff.total_likes()
+        liked = False 
+        if stuff.likes.filter(id=self.request.user.id).exists():
+            liked = True
+        
+        context["liked"] = liked
+        context["total_likes"] = total_likes 
+        return context
+    
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
@@ -69,3 +90,16 @@ class CommentCreateView(CreateView):
         return super().form_valid(form)
     
     success_url = "/"
+
+
+def LikeView(request,pk):
+    post = get_object_or_404(Post, id=request.POST.get("post_id"))
+    liked = False 
+    if post.likes.filter(id= request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+
+        post.likes.add(request.user)
+        liked = True
+    return HttpResponseRedirect(reverse("post-detail",args=[str(pk)]))
